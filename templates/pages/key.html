@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Key {% endblock %} 
+
+{% block content %}
+<h3>Key</h3>
+<div class="pt-3 pb-5">
+    <ul class="list-group">
+        <li class="list-group-item">
+            <i class="fas fa-circle me-2"></i>Tasks: Things you have to do
+        </li>
+        <li class="list-group-item">
+            <i class="fas fa-minus me-2"></i>Notes: Things you don't want to forget
+        </li>
+        <li class="list-group-item">
+            <i class="far fa-circle me-2"></i>Events: Noteworthy moments in time
+        </li>
+        <li class="list-group-item">
+            <i class="fas fa-circle mx-2"></i>Task incomplete
+        </li>
+        <li class="list-group-item">
+            <i class="fas fa-times mx-2"></i>Task complete
+        </li>
+      </ul>
+</div>
+{% endblock %}

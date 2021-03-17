@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Home {% endblock %} 
+
+{% block content %}
+<h3>Home</h3>
+
+<div class="content-wrapper mt-5">
+    <form 
+        class="d-flex jusify-content-center align-items-center flex-column w-100"
+        method="POST"
+        action="#"
+        >
+        {% csrf_token %}
+        <h1>Hello! What is your name?</h1>
+        {{form}}
+        <button type="submit" class="btn btn-primary">Enter</button>
+    </form>
+</div>
+{% endblock %}

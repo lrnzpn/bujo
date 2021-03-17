@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Today {% endblock %} 
+
+{% block content %}
+<h3>Today</h3>
+<div>
+    <p class="h5">Tasks for today, <span class="text-uppercase">{{today}}</span></p>
+
+    <ul class="list-group pt-3 pb-5">
+        <li class="list-group-item">
+            <i class="fas fa-circle me-2"></i> laundry bedsheets
+        </li>
+        <li class="list-group-item">
+            <i class="fas fa-circle me-2"></i> review ethics protocol & questionaires
+        </li>
+        <li class="list-group-item">
+            <i class="far fa-circle me-2"></i> 7PM, Nigma vs Alliance
+        </li>
+        <li class="list-group-item">
+            <i class="fas fa-minus me-2"></i> almost out of coffee
+        </li>
+        <li class="list-group-item">
+            <i class="fas fa-circle me-2"></i> email backlog
+        </li>  
+      </ul>
+</div>
+{% endblock %}

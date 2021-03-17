@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} This Week {% endblock %} 
+
+{% block content %}
+<h3>This Week</h3>
+<div>
+    <p class="h5">Tasks for the week of <span class="text-uppercase">{{start_week}} - {{end_week}}</span></p>
+
+    <ul class="list-group pt-3 pb-5">
+        <li class="list-group-item">
+            <i class="fas fa-circle me-2"></i> workout
+        </li>
+        <li class="list-group-item">
+            <i class="fas fa-circle me-2"></i> buy coffee and milk
+        </li>
+        <li class="list-group-item">
+            <i class="fas fa-circle me-2"></i> laundry
+        </li>
+        <li class="list-group-item">
+            <i class="far fa-circle me-2"></i> 3, 2PM PAASCU meeting
+        </li>
+        <li class="list-group-item">
+            <i class="fas fa-minus me-2"></i> 30g of coffee is too strong
+        </li>
+        <li class="list-group-item">
+            <i class="fas fa-circle me-2"></i> review ethics
+        </li>  
+      </ul>
+</div>
+{% endblock %}

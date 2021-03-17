@@ -1,0 +1,37 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg fixed-top navbar-light container">
+    <a class="navbar-brand" href="/">Your bujo</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto">
+        {% with url_name=request.resolver_match.url_name %}
+        <li class="nav-item">
+          <a 
+            class="nav-link {% if url_name == 'home' %}active{% endif %}" 
+            href="{% url 'home' %}" 
+            >Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if url_name == 'profile' %}active{% endif %}" 
+          href="{% url 'profile' %}">Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if url_name == 'home' %}key{% endif %}" 
+            href="{% url 'key' %}">Key</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if url_name == 'this_week' %}active{% endif %}" 
+            href="{% url 'this_week' %}">This Week</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if url_name == 'today' %}active{% endif %}" 
+            href="{% url 'today' %}">Today</a>
+          </li>
+          {% endwith %}
+      </ul>
+    </div>
+  </nav>
