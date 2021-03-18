@@ -2,25 +2,33 @@ from django.shortcuts import render
 from django.views import View 
 from django.http import HttpResponseRedirect
 
-from .models import *
-from .forms import *
+from .models import MyName
+from .forms import MyNameForm
 
 import datetime
 
 
 def home(response):
-    if(response.method == 'POST'):
-        form = MyName(response.POST)
+    name = MyName.objects.all().last().name
+    
+    if response.method == 'POST':
+        form = MyNameForm(response.POST)
         if form.is_valid():
             user = MyName()
             user.name = form.cleaned_data['name']
             user.save()
             return HttpResponseRedirect('/home/')
     else:
-        form = MyName()
+        form = MyNameForm()
+        
+    name = MyName.objects.all().last().name
     
-    # print(MyName.objects.all().last().name)
-    return render(response, "pages/home.html", {'form':form})
+    context = {
+        'form': form,
+        'name': name,
+    }
+    
+    return render(response, "pages/home.html", context)
 
 
 def profile(response):

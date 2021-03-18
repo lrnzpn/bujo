@@ -21,3 +21,11 @@ main {
     height: 5em;
 }
 
+form label {
+    display: none !important;
+}
+
+.jumbotron button {
+    float: right;
+}
+
