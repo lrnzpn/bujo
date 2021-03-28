@@ -3,7 +3,7 @@ from django.views import View
 from django.http import HttpResponseRedirect
 
 from .models import MyName
-from .forms import MyNameForm
+from .forms import MyNameForm, ProfileForm
 
 import datetime
 
@@ -19,7 +19,6 @@ def home(response):
             renders the home.html template, 
             passing the context data to the template 
     """
-    name = MyName.objects.all().last().name
     
     if response.method == 'POST':
         form = MyNameForm(response.POST)
@@ -27,10 +26,12 @@ def home(response):
             user = MyName()
             user.name = form.cleaned_data['name']
             user.save()
+
             return HttpResponseRedirect('/home/')
     else:
         form = MyNameForm()
-        
+        name = None
+    
     name = MyName.objects.all().last().name
     
     context = {
@@ -51,7 +52,14 @@ def profile(response):
         render(response, "pages/profile.html", context):
             renders the profile.html template
     """
-    return render(response, "pages/profile.html", {})
+    form = ProfileForm()
+    context = {
+        'form':form
+    }
+    return render(response, "pages/profile.html", context)
+
+# def edit_profile(response):
+    
 
 
 def key(response):

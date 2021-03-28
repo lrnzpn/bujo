@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock stylesheets %}
+
 {% block title %} Profile {% endblock %} 
 
 {% block content %}
@@ -22,5 +26,11 @@
             
         </p>
     </div>
+
+    <form method = "post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+    </form>
 </div>
 {% endblock %}

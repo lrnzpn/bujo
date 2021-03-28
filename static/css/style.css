@@ -13,6 +13,7 @@ body {
     position: relative;    
 }
 
+
 main {
     min-height: 80vh;
 }
@@ -21,9 +22,6 @@ main {
     height: 5em;
 }
 
-form label {
-    display: none !important;
-}
 
 .jumbotron button {
     float: right;
