@@ -14,15 +14,13 @@ class MyNameForm(forms.Form):
         fields = ['name']
 
 class ProfileForm(forms.Form):
-    profile_picture = forms.ImageField()
+    profile_pic = forms.ImageField(widget=forms.FileInput(attrs={'class':'custom-file-input'}))
     profile_nickname = forms.CharField(label="Nickname", max_length=40, 
                            widget=forms.TextInput
-                           (attrs={'class':'form-control'}),
-                           initial='Your Nickname')
+                           (attrs={'class':'form-control'}))
     profile_bio = forms.CharField(label="Bio", 
                                   widget=forms.Textarea
-                           (attrs={'class':'form-control'}),
-                           initial='A short description about yourself')
+                           (attrs={'class':'form-control'}))
     class Meta:
         model = Profile
-        fields = "__all__"
+        fields = ['profile_nickname','profile_bio']

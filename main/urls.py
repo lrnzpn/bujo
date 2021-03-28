@@ -11,6 +11,7 @@ urlpatterns = [
     path('key/', key, name='key'),
     path('this_week/', this_week, name='this_week'),
     path('today/', today, name='today'),
+    path('profile/edit/', edit_profile, name='edit_profile'),
 ]
 
 if settings.DEBUG:

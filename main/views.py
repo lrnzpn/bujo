@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View 
 from django.http import HttpResponseRedirect
 
-from .models import MyName
+from .models import MyName, Profile
 from .forms import MyNameForm, ProfileForm
 
 import datetime
@@ -52,14 +52,32 @@ def profile(response):
         render(response, "pages/profile.html", context):
             renders the profile.html template
     """
-    form = ProfileForm()
+    
+    if not Profile.objects.exists():
+        user = Profile()
+        user.profile_pic = None
+        user.profile_nickname = 'Your Nickname'
+        user.profile_bio = 'A short description about yourself'
+        user.save()
+    
+    user = Profile.objects.get(id=1)
+    
     context = {
-        'form':form
+        'user':user
     }
     return render(response, "pages/profile.html", context)
 
-# def edit_profile(response):
-    
+def edit_profile(response):
+    user = Profile.objects.get(id=1)
+    form = ProfileForm(response.POST)
+    if response.method == 'POST':
+        user.profile_nickname = response.POST.get('profile_nickname')
+        user.profile_bio = response.POST.get('profile_bio')
+        user.save()
+        
+        return HttpResponseRedirect('/profile/')
+        
+    return render(response, 'pages/edit_profile.html', {'user':user})
 
 
 def key(response):
