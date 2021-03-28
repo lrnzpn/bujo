@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.views import View 
 from django.core.files.storage import FileSystemStorage
 
-from .models import MyName, Profile
-from .forms import MyNameForm, ProfileForm
+from .models import MyName, Profile, Key
+from .forms import MyNameForm, KeyForm
 
 import datetime
 
@@ -70,8 +70,6 @@ def profile(response):
             user.profile_pic = fs.save(file.name, file)
             user.save()
             return redirect('profile')
-    else:
-        form = ProfileForm()
     
     context = {
         'user':user
@@ -100,7 +98,24 @@ def key(response):
         render(response, "pages/key.html", context):
             renders the key.html template
     """
-    return render(response, "pages/key.html", {})
+    if response.method == 'POST':
+        form = KeyForm(response.POST)
+        if form.is_valid():
+            key = Key()
+            key.key = form.cleaned_data['key']
+            key.description = form.cleaned_data['description']
+            key.save()
+            return redirect('key')
+    else:
+        form = KeyForm()
+    
+    keys = Key.objects.all()
+    
+    context = {
+        'form': form,
+        'keys': keys,
+    }
+    return render(response, "pages/key.html", context )
 
 
 def this_week(response):

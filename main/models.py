@@ -12,6 +12,7 @@ class MyName(models.Model):
             self.name (str): name of the object stored
         """
         return self.name
+   
     
 class Profile(models.Model):
     profile_pic = models.ImageField(upload_to='images/')
@@ -21,3 +22,10 @@ class Profile(models.Model):
     def __str__(self):
         return self.profile_nickname
     
+    
+class Key(models.Model):
+    key = models.CharField(max_length=100)
+    description = models.CharField(max_length=255)
+    
+    def __str__(self):
+        return self.key
