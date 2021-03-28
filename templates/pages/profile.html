@@ -25,14 +25,9 @@
         alt="avatar_placeholder" 
         class="img-fluid img-thumbnail rounded mx-auto d-block"
         >
-        <div class="input-group  mt-4">
-            <div class="custom-file">
-                {{form.profile_pic}}
-                <label class="custom-file-label" for="customFile">Change</label>
-            </div>
-            <div class="input-group-append">
-                <button class="btn btn-outline-success" type="button" id="inputGroupFileAddon04">Edit</button>
-            </div>
+        <div class="form-group  mt-4">
+            <input type="file" class="form-control-file mb-1" name="profile_pic" />
+            <button class="btn btn-outline-success btn-sm" type="submit">Edit</button>
         </div>
     </div>
     <div class="col-md-7 profile-info">

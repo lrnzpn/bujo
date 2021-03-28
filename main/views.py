@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View 
-from django.http import HttpResponseRedirect
+from django.core.files.storage import FileSystemStorage
 
 from .models import MyName, Profile
 from .forms import MyNameForm, ProfileForm
@@ -27,7 +27,7 @@ def home(response):
             user.name = form.cleaned_data['name']
             user.save()
 
-            return HttpResponseRedirect('/home/')
+            return redirect('home')
     else:
         form = MyNameForm()
         name = None
@@ -59,8 +59,19 @@ def profile(response):
         user.profile_nickname = 'Your Nickname'
         user.profile_bio = 'A short description about yourself'
         user.save()
-    
+        
     user = Profile.objects.get(id=1)
+    
+    if response.method == 'POST':
+        if response.FILES.get('profile_pic') is not None:
+            file = response.FILES['profile_pic']
+            fs = FileSystemStorage()
+            user = Profile.objects.get(id=1)
+            user.profile_pic = fs.save(file.name, file)
+            user.save()
+            return redirect('profile')
+    else:
+        form = ProfileForm()
     
     context = {
         'user':user
@@ -69,13 +80,12 @@ def profile(response):
 
 def edit_profile(response):
     user = Profile.objects.get(id=1)
-    form = ProfileForm(response.POST)
     if response.method == 'POST':
         user.profile_nickname = response.POST.get('profile_nickname')
         user.profile_bio = response.POST.get('profile_bio')
         user.save()
         
-        return HttpResponseRedirect('/profile/')
+        return redirect('profile')
         
     return render(response, 'pages/edit_profile.html', {'user':user})
 
