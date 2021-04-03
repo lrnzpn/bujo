@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.views import View 
 from django.core.files.storage import FileSystemStorage
 
-from .models import MyName, Profile, Key
-from .forms import MyNameForm, KeyForm
+from .models import MyName, Profile, Key, ThisWeek
+from .forms import MyNameForm, KeyForm, ThisWeekForm
 
 import datetime
 
@@ -99,11 +99,13 @@ def key(response):
             renders the key.html template
     """
     if response.method == 'POST':
+        
         form = KeyForm(response.POST)
         if form.is_valid():
             key = Key()
             key.key = form.cleaned_data['key']
             key.description = form.cleaned_data['description']
+            key.profile_id = Profile.objects.get(id=1).id
             key.save()
             return redirect('key')
     else:
@@ -134,9 +136,41 @@ def this_week(response):
     start_week = date - datetime.timedelta(date.weekday())
     end_week = start_week + datetime.timedelta(6)
     
+    form = ThisWeekForm
+    
+    if response.method == 'POST':
+        form = ThisWeekForm(response.POST)
+        if form.is_valid() and response.POST.get('add'):
+            this_week = ThisWeek()
+            this_week.key = Key.objects.get(id=response.POST.get('key'))
+            this_week.details = form.cleaned_data['details']
+            this_week.complete = False
+            this_week.start_week = start_week
+            this_week.end_week = end_week
+            this_week.save()
+            return redirect('this_week')
+        
+        elif response.POST.get('update'):
+            task = ThisWeek.objects.get(id=response.POST.get('task_id'))
+            task.key = Key.objects.get(id=response.POST.get('key_'+str(task.id)))
+            task.details = response.POST.get('details_'+str(task.id))
+            task.save()
+            return redirect('this_week')
+        elif response.POST.get('delete'):
+            task = ThisWeek.objects.get(id=response.POST.get('del_id'))
+            task.delete()
+            return redirect('this_week')
+    else:
+        form = ThisWeekForm()
+        
+    tasks = ThisWeek.objects.all()
+    keys = Key.objects.all()
     context = {
         'start_week': start_week.strftime('%m.%d.%a'),
         'end_week': end_week.strftime('%m.%d.%a'),
+        'form': form,
+        'tasks': tasks,
+        'keys': keys,
     }
     
     return render(response, "pages/this_week.html", context)

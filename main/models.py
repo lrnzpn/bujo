@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+
 
 class MyName(models.Model):
     """MyName class creates a char field to store the user's name from the form
@@ -24,8 +26,28 @@ class Profile(models.Model):
     
     
 class Key(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     key = models.CharField(max_length=100)
     description = models.CharField(max_length=255)
+    
+    def __str__(self):
+        return self.key
+    
+class ThisWeek(models.Model):
+    key = models.ForeignKey(Key, on_delete=models.CASCADE)
+    details = models.CharField(max_length=255)
+    complete = models.BooleanField(default=False)
+    start_week = models.DateField(blank=True, null=True)
+    end_week = models.DateField(blank=True, null=True)
+    
+    def __str__(self):
+        return self.key
+    
+class Today(models.Model):
+    key = models.ForeignKey(Key, on_delete=models.CASCADE) 
+    details = models.CharField(max_length=255)
+    complete = models.BooleanField(default=False)
+    today = models.DateField(default=timezone.now)
     
     def __str__(self):
         return self.key

@@ -24,3 +24,16 @@ class KeyForm(forms.Form):
     class Meta:
         model = Key
         fields = "__all__"
+
+keys = [(k.id, k.key) for k in Key.objects.all()]
+
+class ThisWeekForm(forms.Form):
+    key = forms.ChoiceField(choices=keys, widget= forms.Select
+                           (attrs={'class':'custom-select'}))
+    details = forms.CharField(label="Details",max_length=255,
+                          widget= forms.TextInput
+                           (attrs={'class':'form-control mb-3'}))
+    
+    class Meta:
+        model = ThisWeek
+        fields = ['key', 'details']

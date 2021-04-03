@@ -1,0 +1,11 @@
+tbody tr td:last-child {
+    width: 20%;
+    text-align: end;
+}
+
+@media only screen and (max-width: 768px) {
+    tbody tr td:last-child {
+        width: 35%;
+        text-align: end;
+    }
+}

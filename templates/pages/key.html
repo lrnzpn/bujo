@@ -7,8 +7,8 @@
 <h3>Key</h3>
 <div class="pt-3 pb-5">
     {% if keys %}
-    <table class="table table-striped">
-        <thead class="thead-dark">
+    <table class="table">
+        <thead>
           <tr>
             <th scope="col" class="text-center">Key</th>
             <th scope="col" class="text-center">Description</th>
@@ -23,15 +23,12 @@
           {% endfor %}
         </tbody>
       </table>
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#keyModal">
-            Add Key
-        </button>
       {% else %}
-        <h2 class="mb-2">You have no new keys listed</h2>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#keyModal">
-            Add Key
-        </button>
+        <h2 class="mb-2">You have no keys listed</h2>
       {% endif %}
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#keyModal">
+        Add Key
+    </button>
 </div>
   
   <!-- Modal -->
