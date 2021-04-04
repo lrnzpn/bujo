@@ -1,29 +1,150 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'css/tasks.css' %}">
+{% endblock stylesheets %}
+
 {% block title %} Today {% endblock %} 
 
 {% block content %}
 <h3>Today</h3>
 <div>
     <p class="h5">Tasks for today, <span class="text-uppercase">{{today}}</span></p>
+    {% if tasks %}
+    <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col"></th>
+            <th scope="col" colspan="2">Task details</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for task in tasks %}
+          <tr>
+            <th scope="row" class="text-center">
+            {% for k in keys %}
+                {% if k.id == task.key_id%}
+                    {% if k.key|lower == 'task' %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="done_id" id="done_id" value="{{task.id}}">
+                            {% if task.complete %}
+                            <button type="button" class="btn btn-success btn-sm" disabled>Task Done</button>
+                            {% else %}
+                            <button type="submit" class="btn btn-outline-success btn-sm" name="done" value="done">Mark as done</button>
+                            {% endif %}
+                        </form>
+                    {% elif k.key|lower == 'event' %}
+                        <i class="far fa-circle me-2"></i>
+                    {% elif k.key|lower == 'note' %}
+                        <i class="fas fa-minus me-2"></i> 
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            </th>
+            <td>{{ task.details }}</td>
+            <td>
+                <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#editItemModal{{task.id}}">
+                    Edit
+                </button>
+                <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deleteItemModal{{task.id}}">
+                    Delete
+                </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    
 
-    <ul class="list-group pt-3 pb-5">
-        <li class="list-group-item">
-            <i class="fas fa-circle me-2"></i> laundry bedsheets
-        </li>
-        <li class="list-group-item">
-            <i class="fas fa-circle me-2"></i> review ethics protocol & questionaires
-        </li>
-        <li class="list-group-item">
-            <i class="far fa-circle me-2"></i> 7PM, Nigma vs Alliance
-        </li>
-        <li class="list-group-item">
-            <i class="fas fa-minus me-2"></i> almost out of coffee
-        </li>
-        <li class="list-group-item">
-            <i class="fas fa-circle me-2"></i> email backlog
-        </li>  
-      </ul>
+
+    {% else %}
+    <h2 class="my-4">You have no tasks listed</h2>
+    {% endif %}
+
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addItemModal">
+        Add Item
+    </button>
+
+    <div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form method="POST" class="modal-content">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{form.as_p}}
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" name="add" value="add">Add</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    {% for task in tasks %}
+    <div class="modal fade" id="editItemModal{{task.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form method="POST" class="modal-content">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit Item {{task.id}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="edit_id" id="edit_id" value="{{task.id}}">
+                <p>
+                    <label for="id_key_{{task.id}}">Key:</label>
+                    <select name="key_{{task.id}}" class="custom-select" id="id_key_{{task.id}}">     
+                        {% for key in keys %}
+                        <option value="{{key.id}}" {% if key.id == task.key_id %}selected{% endif %}>{{key.key}}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+                <p>
+                    <label for="id_details_{{task.id}}">Details:</label> 
+                    <input type="text" name="details_{{task.id}}" value="{{task.details}}" class="form-control mb-3" maxlength="255" required="" id="id_details_{{task.id}}">
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" name="update" value="update">Update</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteItemModal{{task.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form class="modal-content" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="del_id" id="del_id" value="{{task.id}}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Delete Item {{task.id}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete the item?
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger" name="delete" value="delete">Yes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+   
 </div>
 {% endblock %}

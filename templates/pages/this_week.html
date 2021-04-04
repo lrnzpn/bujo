@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block stylesheets %}
 <link rel="stylesheet" href="{% static 'css/tasks.css' %}">
 {% endblock stylesheets %}
@@ -21,7 +22,7 @@
         <tbody>
         {% for task in tasks %}
           <tr>
-            <th scope="row">
+            <th scope="row" class="text-center">
             {% for k in keys %}
                 {% if k.id == task.key_id%}
                     {% if k.key|lower == 'task' %}
@@ -34,9 +35,11 @@
                             <button type="submit" class="btn btn-outline-success btn-sm" name="done" value="done">Mark as done</button>
                             {% endif %}
                         </form>
-                    {% else %}
+                    {% elif k.key|lower == 'event' %}
+                        <i class="far fa-circle me-2"></i>
+                    {% elif k.key|lower == 'note' %}
+                        <i class="fas fa-minus me-2"></i> 
                     {% endif %}
-
                 {% endif %}
             {% endfor %}
             </th>

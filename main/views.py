@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.views import View 
 from django.core.files.storage import FileSystemStorage
 
-from .models import MyName, Profile, Key, ThisWeek
-from .forms import MyNameForm, KeyForm, ThisWeekForm
+from .models import MyName, Profile, Key, ThisWeek, Today
+from .forms import MyNameForm, KeyForm, ThisWeekForm, TodayForm
 
 import datetime
 
@@ -117,7 +117,7 @@ def key(response):
         'form': form,
         'keys': keys,
     }
-    return render(response, "pages/key.html", context )
+    return render(response, "pages/key.html", context)
 
 
 def this_week(response):
@@ -135,9 +135,7 @@ def this_week(response):
     date = datetime.date.today()
     start_week = date - datetime.timedelta(date.weekday())
     end_week = start_week + datetime.timedelta(6)
-    
-    form = ThisWeekForm
-    
+        
     if response.method == 'POST':
         form = ThisWeekForm(response.POST)
         if form.is_valid() and response.POST.get('add'):
@@ -196,8 +194,44 @@ def today(response):
     """
     date = datetime.date.today()
     
+    if response.method == 'POST':
+        form = TodayForm(response.POST)
+        if form.is_valid() and response.POST.get('add'):
+            today = Today()
+            today.key = Key.objects.get(id=response.POST.get('key'))
+            today.details = form.cleaned_data['details']
+            today.complete = False
+            today.today = date
+            today.save()
+            return redirect('today')
+        
+        elif response.POST.get('update'):
+            task = Today.objects.get(id=response.POST.get('edit_id'))
+            task.key = Key.objects.get(id=response.POST.get('key_'+str(task.id)))
+            task.details = response.POST.get('details_'+str(task.id))
+            task.save()
+            return redirect('today')
+        
+        elif response.POST.get('delete'):
+            task = Today.objects.get(id=response.POST.get('del_id'))
+            task.delete()
+            return redirect('today')
+        
+        elif response.POST.get('done'):
+            task = Today.objects.get(id=response.POST.get('done_id'))
+            task.complete = True
+            task.save()
+            return redirect('today')
+    else:
+        form = TodayForm()
+        
+    tasks = Today.objects.all()
+    keys = Key.objects.all()
     context = {
-        'today': today,
+        'today': date,
+        'form': form,
+        'tasks': tasks,
+        'keys': keys,
     }
     
     return render(response, "pages/today.html", context)

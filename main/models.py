@@ -41,7 +41,7 @@ class ThisWeek(models.Model):
     end_week = models.DateField(blank=True, null=True)
     
     def __str__(self):
-        return self.key
+        return self.details
     
 class Today(models.Model):
     key = models.ForeignKey(Key, on_delete=models.CASCADE) 
@@ -50,4 +50,4 @@ class Today(models.Model):
     today = models.DateField(default=timezone.now)
     
     def __str__(self):
-        return self.key
+        return self.details
