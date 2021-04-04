@@ -21,12 +21,24 @@
         <tbody>
         {% for task in tasks %}
           <tr>
-            <th scope="row" class="text-center">
-            {% if task.complete == True %}
-                <input type='checkbox' value="clicked" name='c{{task.id}}' checked>
-            {% else %}
-                <input type='checkbox' value="clicked" name='c{{task.id}}'>
-            {% endif %}
+            <th scope="row">
+            {% for k in keys %}
+                {% if k.id == task.key_id%}
+                    {% if k.key|lower == 'task' %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="done_id" id="done_id" value="{{task.id}}">
+                            {% if task.complete %}
+                            <button type="button" class="btn btn-success btn-sm" disabled>Task Done</button>
+                            {% else %}
+                            <button type="submit" class="btn btn-outline-success btn-sm" name="done" value="done">Mark as done</button>
+                            {% endif %}
+                        </form>
+                    {% else %}
+                    {% endif %}
+
+                {% endif %}
+            {% endfor %}
             </th>
             <td>{{ task.details }}</td>
             <td>
@@ -86,7 +98,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <input type="hidden" name="task_id" id="task_id" value="{{task.id}}">
+                <input type="hidden" name="edit_id" id="edit_id" value="{{task.id}}">
                 <p>
                     <label for="id_key_{{task.id}}">Key:</label>
                     <select name="key_{{task.id}}" class="custom-select" id="id_key_{{task.id}}">     

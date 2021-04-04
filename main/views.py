@@ -151,14 +151,21 @@ def this_week(response):
             return redirect('this_week')
         
         elif response.POST.get('update'):
-            task = ThisWeek.objects.get(id=response.POST.get('task_id'))
+            task = ThisWeek.objects.get(id=response.POST.get('edit_id'))
             task.key = Key.objects.get(id=response.POST.get('key_'+str(task.id)))
             task.details = response.POST.get('details_'+str(task.id))
             task.save()
             return redirect('this_week')
+        
         elif response.POST.get('delete'):
             task = ThisWeek.objects.get(id=response.POST.get('del_id'))
             task.delete()
+            return redirect('this_week')
+        
+        elif response.POST.get('done'):
+            task = ThisWeek.objects.get(id=response.POST.get('done_id'))
+            task.complete = True
+            task.save()
             return redirect('this_week')
     else:
         form = ThisWeekForm()
