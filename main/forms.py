@@ -14,6 +14,8 @@ class MyNameForm(forms.Form):
         fields = ['name']
 
 class KeyForm(forms.Form):
+    """KeyForm creates a form for the key name and key description
+    """
     key = forms.CharField(label="Key",max_length=100,
                           widget= forms.TextInput
                            (attrs={'class':'form-control mb-3'}))
@@ -28,6 +30,9 @@ class KeyForm(forms.Form):
 keys = [(k.id, k.key) for k in Key.objects.all()]
 
 class ThisWeekForm(forms.Form):
+    """ThisWeekForm creates a form containing the select field of key options
+    and the task details under it
+    """
     key = forms.ChoiceField(choices=keys, widget= forms.Select
                            (attrs={'class':'custom-select'}))
     details = forms.CharField(label="Details",max_length=255,
@@ -39,6 +44,9 @@ class ThisWeekForm(forms.Form):
         fields = ['key', 'details']
         
 class TodayForm(forms.Form):
+    """TodayForm creates a form containing the select field of key options
+    and the task details under it
+    """
     key = forms.ChoiceField(choices=keys, widget= forms.Select
                            (attrs={'class':'custom-select'}))
     details = forms.CharField(label="Details",max_length=255,

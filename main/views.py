@@ -50,7 +50,8 @@ def profile(response):
     
     Returns:
         render(response, "pages/profile.html", context):
-            renders the profile.html template
+            renders the profile.html template,
+            passing the context data to the template 
     """
     
     if not Profile.objects.exists():
@@ -77,6 +78,16 @@ def profile(response):
     return render(response, "pages/profile.html", context)
 
 def edit_profile(response):
+    """Renders the edit_profile page
+    
+    Args:
+        response: HTTP response
+    
+    Returns:
+        render(response, "pages/edit_profile.html", context):
+            renders the edit_profile.html template,
+            which makes the user able to edit the name and bio
+    """
     user = Profile.objects.get(id=1)
     if response.method == 'POST':
         user.profile_nickname = response.POST.get('profile_nickname')
@@ -96,7 +107,9 @@ def key(response):
     
     Returns:
         render(response, "pages/key.html", context):
-            renders the key.html template
+            renders the key.html template,
+            which lets users create new keys with 
+            their descriptions
     """
     if response.method == 'POST':
         
@@ -129,8 +142,8 @@ def this_week(response):
     Returns:
         render(response, "pages/this_week.html", context):
             renders the this_week.html template,
-            passing the context data containing the starting date 
-            of the week and the ending date of the week
+            and gives the ability to create, edit, 
+            and delete tasks, as well as mark tasks done
     """
     date = datetime.date.today()
     start_week = date - datetime.timedelta(date.weekday())
@@ -190,7 +203,8 @@ def today(response):
     Returns:
         render(response, "pages/today.html", context):
             renders the today.html template, 
-            passing the context data containing today's date
+            and gives the ability to create, edit, 
+            and delete tasks, as well as mark tasks done
     """
     date = datetime.date.today()
     

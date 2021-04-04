@@ -1,3 +1,7 @@
 form label {
     display: none !important;
 }
+
+.jumbotron {
+    background: none !important;
+}
