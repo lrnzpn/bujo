@@ -4,7 +4,8 @@
 
 ```bash
 # clone the repository and switch to lab directory
-$ git clone https://gitlab.com/miggypinaroc/pinaroc_lab1.git && cd pinaroc_lab1/
+# this command should be able to clone the repository and switch to the lab2 branch
+$ git clone -b lab2 https://gitlab.discs.ateneo.edu/miggypinaroc/pinaroc_lab1.git && cd pinaroc_lab1/
 
 # create virtualenv
 $ virtualenv env && source env/bin/activate
