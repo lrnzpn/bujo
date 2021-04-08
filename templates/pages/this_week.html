@@ -79,6 +79,15 @@
                 </button>
             </div>
             <div class="modal-body">
+                <p>
+                    <label for="id_key">Key:</label>
+                    <select name="key" class="custom-select" id="id_key">     
+                        {% for key in keys %}
+                        <option value="{{key.id}}">{{key.key}}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+
                 {{form.as_p}}
             </div>
             <div class="modal-footer">

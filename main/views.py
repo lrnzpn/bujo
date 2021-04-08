@@ -32,7 +32,7 @@ def home(response):
         form = MyNameForm()
         name = None
     
-    name = MyName.objects.all().last().name
+    name = MyName.objects.all().last().name if len(MyName.objects.all()) else None
     
     context = {
         'form': form,

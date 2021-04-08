@@ -38,8 +38,8 @@ class Key(models.Model):
     and is tied to the profile of the user 
     """
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    key = models.CharField(max_length=100)
-    description = models.CharField(max_length=255)
+    key = models.CharField(max_length=100, blank=True, null=True)
+    description = models.CharField(max_length=255, blank=True, null=True)
     
     def __str__(self):
         """This method sets the object model name as the name that is stored
@@ -54,7 +54,7 @@ class ThisWeek(models.Model):
     of the task, if the task is completed, and the start and end week dates
     """
     key = models.ForeignKey(Key, on_delete=models.CASCADE)
-    details = models.CharField(max_length=255)
+    details = models.CharField(max_length=255, blank=True, null=True)
     complete = models.BooleanField(default=False)
     start_week = models.DateField(blank=True, null=True)
     end_week = models.DateField(blank=True, null=True)
@@ -72,7 +72,7 @@ class Today(models.Model):
     of the task, if the task is completed, and date today
     """
     key = models.ForeignKey(Key, on_delete=models.CASCADE) 
-    details = models.CharField(max_length=255)
+    details = models.CharField(max_length=255, blank=True, null=True)
     complete = models.BooleanField(default=False)
     today = models.DateField(default=timezone.now)
     
