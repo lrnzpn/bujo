@@ -19,7 +19,6 @@ def home(response):
             renders the home.html template, 
             passing the context data to the template 
     """
-    name = MyName.objects.all().last().name
     
     if response.method == 'POST':
         form = MyNameForm(response.POST)
@@ -31,7 +30,7 @@ def home(response):
     else:
         form = MyNameForm()
         
-    name = MyName.objects.all().last().name
+    name = MyName.objects.all().last().name if len(MyName.objects.all()) else None
     
     context = {
         'form': form,
